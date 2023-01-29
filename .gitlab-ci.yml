@@ -1,0 +1,31 @@
+image: node:latest
+
+stages:
+  - build
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+build_typescript:
+  stage: build
+  variables:
+    CI: "false"
+  cache: 
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - build
